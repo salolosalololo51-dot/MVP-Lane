@@ -1,0 +1,236 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@namespace MVPLane.Web
+@inject IJSRuntime JS
+<PageTitle>MVP Lane</PageTitle>
+<div class="market-container">
+    <div class="form-section">
+        <h2>🚀 Создать</h2>
+        <p class="subtitle">Заполните шаблон.</p>
+        <div class="form-group">
+            <label>Никнейм</label>
+            <input type="text" @bind="newAd.Nickname" />
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>MMR</label>
+                <input type="number" @bind="newAd.Mmr" />
+            </div>
+            <div class="form-group">
+                <label>Роль</label>
+                <select @bind="newAd.MainRole">
+                    <option>Керри (Позиция 1)</option>
+                    <option>Мид (Позиция 2)</option>
+                    <option>Хардлайн (Позиция 3)</option>
+                    <option>Частичная поддержка (Позиция 4)</option>
+                    <option>Полная поддержка (Позиция 5)</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Ранг</label>
+            <select @bind="newAd.Rank">
+                <option>Рекрут (Herald)</option>
+                <option>Страж (Guardian)</option>
+                <option>Рыцарь (Crusader)</option>
+                <option>Герой (Archon)</option>
+                <option>Властелин (Legend)</option>
+                <option>Божество (Divine)</option>
+                <option>Титан (Immortal)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Герой</label>
+            <select @bind="newAd.FavoriteHero">
+                <option>Pudge</option>
+                <option>Shadow Fiend</option>
+                <option>Invoker</option>
+                <option>Juggernaut</option>
+                <option>Anti-Mage</option>
+                <option>Phantom Assassin</option>
+                <option>Rubick</option>
+                <option>Crystal Maiden</option>
+                <option>Earthshaker</option>
+                <option>Tinker</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Порядочность</label>
+            <input type="number" @bind="newAd.Behavior" />
+        </div>
+        <div class="form-group">
+            <label>Услуга</label>
+            <select @bind="newAd.ServiceType">
+                <option>Поиск команды / Пати</option>
+                <option>Коучинг (Обучение игре)</option>
+                <option>Буст / Отмыв порядочности</option>
+                <option>Совместная игра (Покупка саппорта)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Описание</label>
+            <textarea @bind="newAd.Description" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Ссылка на Steam профиль</label>
+            <input type="text" @bind="newAd.SteamLink" placeholder="https://steamcommunity.com..." />
+            @if (!string.IsNullOrEmpty(newAd.SteamLink))
+            {
+                <div class="steam-status @(newAd.SteamLink.Contains("steamcommunity.com") ? "st-ok" : "st-bad")">
+                    @(newAd.SteamLink.Contains("steamcommunity.com") ? "✅ Профиль Steam подтвержден" : "❌ Нужна ссылка на Steam!")
+                </div>
+            }
+        </div>
+        <button class="btn-publish" @onclick="PublishAdvertisement">Опубликовать</button>
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="error-msg-box">⚠️ @errorMessage</div>
+        }
+    </div>
+    <div class="feed-section">
+        <h2>🔥 Актуальные</h2>
+        <div class="search-box-container">
+            <input type="text" @bind="searchQuery" @bind:event="oninput" placeholder="🔍 Поиск игрока по никнейму..." class="dota-search-input" />
+        </div>
+        <div class="feed-controls">
+            <div class="filter-buttons">
+                <button class="btn-filter @(sf == "Все" ? "active" : "")" @onclick='() => SetFilter("Все")'>Все</button>
+                <button class="btn-filter @(sf == "Поиск команды / Пати" ? "active" : "")" @onclick='() => SetFilter("Поиск команды / Пати")'>Пати</button>
+                <button class="btn-filter @(sf == "Коучинг (Обучение игре)" ? "active" : "")" @onclick='() => SetFilter("Коучинг (Обучение игре)")'>Тренеры</button>
+                <button class="btn-filter @(sf == "Буст / Отмыв порядочности" ? "active" : "")" @onclick='() => SetFilter("Буст / Отмыв порядочности")'>Буст</button>
+            </div>
+            <div class="sort-buttons">
+                <button class="btn-sort @(sbMmr ? "" : "active")" @onclick="() => sbMmr = false">⏱️ Новые</button>
+                <button class="btn-sort @(sbMmr ? "active" : "")" @onclick="() => sbMmr = true">📈 Топ</button>
+            </div>
+        </div>
+        <div class="ads-list">
+            @foreach (var ad in GetFilteredAndSortedAds())
+            {
+                <div class="ad-card">
+                    <div class="card-header">
+                        <span class="badge-type">@ad.ServiceType</span>
+                        <div class="card-header-right">
+                            <span class="card-date">@ad.CreatedAt.ToString("dd.MM")</span>
+                            <button class="btn-delete-ad" @onclick="() => DeleteAd(ad.Id)">❌</button>
+                        </div>
+                    </div>
+                    <div class="card-main-info-row">
+                        <div class="card-main-info-text">
+                            <h3 class="user-nick">@ad.Nickname</h3>
+                            <div class="user-badges">
+                                <span class="behavior-badge @(ad.Behavior >= 10000 ? "bh-good" : ad.Behavior >= 6000 ? "bh-warn" : "bh-toxic")">
+                                    @(ad.Behavior >= 10000 ? "😇" : ad.Behavior >= 6000 ? "😐" : "🤬") @ad.Behavior
+                                </span>
+                                <span class="user-mmr">🏆 @ad.Mmr</span>
+                                <span class="rank-badge @(ad.Rank.Contains("Титан") ? "rank-immortal" : ad.Rank.Contains("Божество") ? "rank-divine" : "rank-normal")">🎖️ @ad.Rank</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-meta-tags">
+                        <div class="user-role">🎭 Роль: <span class="role-badge @(ad.MainRole.Contains("1") ? "pos-1" : ad.MainRole.Contains("2") ? "pos-2" : ad.MainRole.Contains("3") ? "pos-3" : "pos-support")">@ad.MainRole</span></div>
+                        <div class="user-hero">⭐ Герой: <span class="hero-badge">@ad.FavoriteHero</span></div>
+                    </div>
+                    <p class="card-desc">@ad.Description</p>
+                    <a href="@ad.SteamLink" target="_blank" class="btn-steam">🎮 Профиль Steam</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    public class LocalAdItem
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Nickname { get; set; } = "";
+        public int Mmr { get; set; }
+        public string MainRole { get; set; } = "Керри (Позиция 1)";
+        public string Rank { get; set; } = "Герой (Archon)";
+        public string FavoriteHero { get; set; } = "Pudge";
+        public int Behavior { get; set; } = 12000;
+        public string ServiceType { get; set; } = "Поиск команды / Пати";
+        public string Description { get; set; } = "";
+        public string SteamLink { get; set; } = "";
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+    }
+
+    private static List<LocalAdItem> Advertisements = new() {
+        new LocalAdItem { Nickname = "Dendi", Mmr = 8000, MainRole = "Мид (Позиция 2)", Rank = "Титан (Immortal)", FavoriteHero = "Invoker", Behavior = 12000, ServiceType = "Коучинг (Обучение игре)", Description = "Мид.", SteamLink = "https://steamcommunity.com" }
+    };
+
+    private LocalAdItem newAd = new();
+    private string errorMessage = "";
+    private string sf = "Все";
+    private void SetFilter(string filter) => sf = filter;
+    private bool sbMmr = false;
+    private string searchQuery = "";
+    private static string key = "dota_market_ads";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadData();
+            StateHasChanged();
+        }
+    }
+
+    private IEnumerable<LocalAdItem> GetFilteredAndSortedAds()
+    {
+        var q = Advertisements.AsEnumerable();
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+        {
+            q = q.Where(a => a.Nickname.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+        }
+        if (sf != "Все") q = q.Where(a => a.ServiceType == sf);
+        return sbMmr ? q.OrderByDescending(a => a.Mmr) : q.OrderByDescending(a => a.CreatedAt);
+    }
+
+    private async Task PublishAdvertisement()
+    {
+        if (string.IsNullOrWhiteSpace(newAd.Nickname)) { errorMessage = "Ник!"; return; }
+        if (newAd.Mmr <= 0) { errorMessage = "MMR!"; return; }
+        if (newAd.Behavior < 0 || newAd.Behavior > 12000) { errorMessage = "0-12000!"; return; }
+        if (string.IsNullOrWhiteSpace(newAd.Description)) { errorMessage = "Текст!"; return; }
+        if (string.IsNullOrWhiteSpace(newAd.SteamLink) || !newAd.SteamLink.Contains("steamcommunity.com"))
+        {
+            errorMessage = "Ошибка! Вставьте ссылку на Steam!";
+            return;
+        }
+
+        Advertisements.Add(new LocalAdItem { Nickname = newAd.Nickname, Mmr = newAd.Mmr, MainRole = newAd.MainRole, Rank = newAd.Rank, FavoriteHero = newAd.FavoriteHero, Behavior = newAd.Behavior, ServiceType = newAd.ServiceType, Description = newAd.Description, SteamLink = newAd.SteamLink, CreatedAt = DateTime.Now });
+        await SaveData();
+        newAd = new();
+        errorMessage = "";
+    }
+
+    private async Task DeleteAd(Guid id)
+    {
+        var item = Advertisements.FirstOrDefault(a => a.Id == id);
+        if (item != null) { Advertisements.Remove(item); await SaveData(); }
+    }
+
+    private async Task SaveData()
+    {
+        try
+        {
+            var json = System.Text.Json.JsonSerializer.Serialize(Advertisements);
+            await JS.InvokeVoidAsync("localStorage.setItem", key, json);
+        }
+        catch { }
+    }
+
+    private async Task LoadData()
+    {
+        try
+        {
+            var json = await JS.InvokeAsync<string>("localStorage.getItem", key);
+            if (!string.IsNullOrWhiteSpace(json))
+            {
+                var obj = System.Text.Json.JsonSerializer.Deserialize(json, typeof(List<LocalAdItem>));
+                if (obj is List<LocalAdItem> list && list.Count > 0) Advertisements = list;
+            }
+        }
+        catch { }
+    }
+}

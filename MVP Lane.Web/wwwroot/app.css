@@ -1,0 +1,507 @@
+/* КРАСИВЫЙ ИГРОВОЙ ДИЗАЙН MVP LANE */
+
+:root {
+    --bg-dark: #070709;
+    --panel-bg: linear-gradient(145deg, rgba(28, 20, 20, 0.85) 0%, rgba(18, 18, 22, 0.85) 100%);
+    --card-bg: linear-gradient(135deg, rgba(35, 35, 46, 0.7) 0%, rgba(22, 22, 28, 0.7) 100%);
+    --dota-red: #ff3838;
+    --dota-red-glow: rgba(255, 56, 56, 0.25);
+    --dota-gold: #f1c40f;
+    --dota-gold-glow: rgba(241, 196, 15, 0.3);
+    --text-main: #f1f5f9;
+    --border-soft: rgba(255, 255, 255, 0.06);
+}
+
+/* Глубокий фон с легким багровым свечением по центру */
+body {
+    background: radial-gradient(circle at 50% 40%, #1e1111 0%, var(--bg-dark) 65%) !important;
+    color: var(--text-main) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.market-container {
+    display: grid;
+    grid-template-columns: 410px 1fr;
+    gap: 35px;
+    align-items: start;
+}
+
+/* Форма с сочным, но мягким багровым контуром */
+.form-section {
+    background: var(--panel-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 28px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 56, 56, 0.15);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.05);
+}
+
+    .form-section h2 {
+        margin-top: 0;
+        margin-bottom: 5px;
+        font-size: 1.4rem;
+        color: #fff;
+        letter-spacing: 0.5px;
+        text-shadow: 0 0 10px var(--dota-red-glow);
+    }
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-bottom: 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #cbd5e1;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Поля ввода с неоновой подсветкой при фокусе */
+    .form-group input, .form-group select, .form-group textarea {
+        background-color: rgba(12, 12, 16, 0.85);
+        border: 1px solid #3f3f56;
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: white;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+    }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--dota-red);
+            box-shadow: 0 0 12px var(--dota-red-glow);
+            outline: none;
+        }
+
+.form-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 15px;
+}
+
+/* Сочная дотерская кнопка публикации */
+.btn-publish {
+    width: 100%;
+    background: linear-gradient(135deg, #ff3838 0%, #b91c1c 100%);
+    color: white;
+    border: 1px solid #ff6666;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 4px 15px rgba(255, 56, 56, 0.35);
+}
+
+    .btn-publish:hover {
+        filter: brightness(1.15);
+        box-shadow: 0 6px 20px rgba(255, 56, 56, 0.5);
+    }
+
+    .btn-publish:active {
+        transform: translateY(1px);
+    }
+
+.error-msg-box {
+    background: rgba(220, 38, 38, 0.15);
+    border: 1px solid var(--dota-red);
+    color: #fca5a5;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 0.88rem;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
+}
+
+.feed-section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: white;
+}
+
+.ads-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Красивые объемные карточки с мягким свечением краев */
+.ad-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    padding: 22px;
+    color: white;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+    transition: all 0.2s ease-out;
+}
+
+    .ad-card:hover {
+        border-color: rgba(255, 56, 56, 0.25);
+        box-shadow: 0 15px 35px rgba(255, 56, 56, 0.08);
+        transform: translateY(-2px);
+    }
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.badge-type {
+    background: linear-gradient(90deg, #2a2a35 0%, #16161f 100%);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 5px 12px;
+    border-radius: 5px;
+    border-left: 3px solid var(--dota-red);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-date {
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.card-main-info-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.card-main-info-text {
+    flex-grow: 1;
+}
+
+.user-nick {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.15);
+}
+
+.user-badges {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 6px;
+}
+
+/* Сочный золотой MMR */
+.user-mmr {
+    color: var(--dota-gold);
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-shadow: 0 0 8px var(--dota-gold-glow);
+}
+
+/* Контрастные и яркие бейджи */
+.behavior-badge {
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.bh-good {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.bh-warn {
+    background: rgba(241, 196, 15, 0.15);
+    color: #f1c40f;
+    border: 1px solid rgba(241, 196, 15, 0.25);
+}
+
+.bh-toxic {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.rank-badge {
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.rank-normal {
+    background: #272732;
+    color: #e2e8f0;
+    border: 1px solid #3f3f52;
+}
+
+.rank-divine {
+    background: rgba(168, 85, 247, 0.15);
+    color: #c084fc;
+    border: 1px solid #a855f7;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.25);
+}
+
+.rank-immortal {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid #ef4444;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+    text-transform: uppercase;
+}
+
+.user-meta-tags {
+    display: flex;
+    gap: 16px;
+    font-size: 0.88rem;
+    color: #94a3b8;
+    margin-bottom: 14px;
+    align-items: center;
+}
+
+.role-badge {
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-left: 4px;
+}
+
+.pos-1 {
+    background: rgba(234, 179, 8, 0.12);
+    color: #facc15;
+    border: 1px solid rgba(234, 179, 8, 0.25);
+}
+
+.pos-2 {
+    background: rgba(59, 130, 246, 0.12);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.pos-3 {
+    background: rgba(139, 92, 246, 0.12);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.pos-support {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+/* Яркий неоновый тег героя */
+.hero-badge {
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-left: 4px;
+    background: rgba(14, 165, 233, 0.15);
+    color: #38bdf8;
+    border: 1px solid #0ea5e9;
+    box-shadow: 0 0 8px rgba(14, 165, 233, 0.2);
+}
+
+.card-desc {
+    color: #f1f5f9;
+    font-size: 0.95rem;
+    margin: 0 0 18px 0;
+    white-space: pre-line;
+    line-height: 1.5;
+    background: rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* Сочная кнопка Стима */
+.btn-steam {
+    display: inline-block;
+    background: linear-gradient(135deg, #2a475e 0%, #1b2838 100%);
+    color: #66c0f4;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 1px solid #3a5a78;
+    transition: all 0.15s ease;
+}
+
+    .btn-steam:hover {
+        background: #66c0f4;
+        color: #1b2838;
+        box-shadow: 0 0 15px rgba(102, 192, 244, 0.4);
+    }
+
+/* Кнопки управления */
+.feed-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    gap: 15px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-filter {
+    background: rgba(28, 28, 36, 0.6);
+    border: 1px solid #3a3a4a;
+    color: #94a3b8;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.15s ease;
+}
+
+    .btn-filter:hover {
+        border-color: var(--dota-red);
+        color: white;
+    }
+
+    .btn-filter.active {
+        background: var(--dota-red);
+        border-color: var(--dota-red);
+        color: white;
+        box-shadow: 0 0 12px var(--dota-red-glow);
+    }
+
+.sort-buttons {
+    display: flex;
+    gap: 2px;
+    background: #121216;
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid #2d2d3d;
+}
+
+.btn-sort {
+    background: none;
+    border: none;
+    color: #64748b;
+    padding: 5px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: color 0.15s ease;
+}
+
+    .btn-sort:hover {
+        color: #cbd5e1;
+    }
+
+    .btn-sort.active {
+        background: #2d2d3d;
+        color: var(--dota-gold);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+/* Боевой щит удаления */
+.card-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-delete-ad {
+    background: #141111;
+    color: #9b2c2c;
+    border: 1px solid #4a3a3a;
+    cursor: pointer;
+    font-size: 0.7rem;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+    transition: all 0.15s ease;
+}
+
+    .btn-delete-ad:hover {
+        background: var(--dota-red);
+        color: white;
+        border-color: var(--dota-gold);
+        box-shadow: 0 0 12px var(--dota-red-glow);
+    }
+
+/* Валидатор Steam */
+.steam-status {
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-top: 6px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.st-ok {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.st-bad {
+    background: rgba(239, 68, 68, 0.12);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+/* КРАСИВАЯ СТРОКА ПОИСКА DOTA 2 */
+.search-box-container {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.dota-search-input {
+    width: 100%;
+    background-color: rgba(10, 10, 14, 0.8) !important;
+    border: 1px solid #3f3f56 !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    color: white !important;
+    font-size: 0.95rem !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box;
+}
+
+    .dota-search-input:focus {
+        border-color: var(--dota-red) !important;
+        box-shadow: 0 0 12px var(--dota-red-glow) !important;
+        outline: none;
+    }

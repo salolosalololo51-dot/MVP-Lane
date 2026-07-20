@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MVP Lane.ApiService/MVP Lane.ApiService.csproj" />
+  <Project Path="MVP Lane.AppHost/MVP Lane.AppHost.csproj" />
+  <Project Path="MVP Lane.ServiceDefaults/MVP Lane.ServiceDefaults.csproj" />
+  <Project Path="MVP Lane.Web/MVP Lane.Web.csproj" />
+</Solution>

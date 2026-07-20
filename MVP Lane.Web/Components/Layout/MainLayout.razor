@@ -1,0 +1,82 @@
+﻿@inherits LayoutComponentBase
+
+<div class="dota-app">
+    <header class="dota-header">
+        <div class="logo">MVP <span class="red-text">LANE</span></div>
+        <div class="nav-links">
+            <span class="status-badge">DOTA 2 MARKET</span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        @Body
+    </main>
+</div>
+
+<style>
+    :root {
+        --dota-bg: #0c0c0e;
+        --dota-card: #17171c;
+        --dota-red: #e53e3e;
+        --dota-text: #e2e8f0;
+        --dota-muted: #718096;
+        --dota-border: #2d3748;
+    }
+
+    body {
+        background-color: var(--dota-bg) !important;
+        color: var(--dota-text) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* Полный сброс отступов Блейзора */
+    .page, main, .sidebar {
+        display: block !important;
+        flex-direction: unset !important;
+    }
+
+    .dota-app {
+        min-height: 100vh;
+        background-color: var(--dota-bg);
+    }
+
+    .dota-header {
+        background-color: #060608;
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--dota-red);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        color: white;
+    }
+
+    .red-text {
+        color: var(--dota-red);
+        text-shadow: 0 0 10px rgba(229, 62, 62, 0.4);
+    }
+
+    .status-badge {
+        background: #1a202c;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: var(--dota-muted);
+        border: 1px solid var(--dota-border);
+    }
+
+    .main-content {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+</style>
