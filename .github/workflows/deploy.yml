@@ -1,0 +1,21 @@
+name: Deploy Blazor WASM
+on:
+  push:
+    branches: [ master ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0
+    - name: Publish Project
+      run: dotnet publish MVP_Lane.Web/MVP_Lane.Web.csproj -c Release -o release
+    - name: Upload to Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: release/wwwroot
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
